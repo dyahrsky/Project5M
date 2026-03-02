@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapot Stamet - Project5M</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Lexend', sans-serif; background-color: #d8dadd; }
+        
+        .pill-container {
+            background-color: #08335e;
+            padding: 4px;
+            border-radius: 12px;
+            display: inline-flex;
+            border: 1px solid #041d3d;
+        }
+        .pill-item {
+            padding: 8px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #eceff3;
+            transition: all 0.3s ease;
+        }
+        .pill-item.active {
+            background-color: white;
+            color: #2563eb;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+    
+    <header class="bg-white border-b border-gray-100 px-12 py-8 flex flex-col items-center shrink-0 relative">
+        <a href="index.html" class="absolute left-12 top-1/2 -translate-y-1/2 flex items-center gap-2 text-slate-400 hover:text-blue-600 font-bold text-sm transition group">
+            <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i> Dashboard
+        </a>
+
+        <div class="text-center">
+            <h1 class="text-4xl font-extrabold text-slate-900 uppercase tracking-tighter">
+                Rapot <span class="text-blue-600">STAMET</span>
+            </h1>
+            <p id="display-upt" class="text-slate-400 font-bold text-lg mt-1 italic uppercase tracking-wide">Silahkan Pilih Stasiun...</p>
+        </div>
+    </header>
+
+    <main class="flex-grow overflow-y-auto p-12 space-y-10">
+        
+        <div class="max-w-4xl mx-auto space-y-6 flex flex-col items-center">
+            <div class="relative w-full shadow-xl shadow-blue-100/30 rounded-2xl">
+                <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-base"></i>
+                <input type="text" id="uptSearch" oninput="updateUPTName(this.value)" 
+                    placeholder="Cari stasiun meteorologi..." 
+                    class="w-full pl-14 pr-8 py-3.5 rounded-2xl border border-slate-100 focus:border-blue-400 focus:bg-white bg-white outline-none transition-all text-base font-medium text-slate-700 shadow-sm">
+            </div>
+
+            <div class="pill-container scale-100"> <button onclick="switchTab(this, 'metar-content')" class="pill-item active">METAR</button>
+                <button onclick="switchTab(this, 'synop-content')" class="pill-item">SYNOP</button>
+                <button onclick="switchTab(this, 'iso-content')" class="pill-item">ISO</button>
+                <button onclick="switchTab(this, 'iku-content')" class="pill-item">IKU</button>
+                <button onclick="switchTab(this, 'taf-content')" class="pill-item">TAF</button>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto">
+            <section id="metar-content" class="content-section active">
+                <div class="bg-white rounded-[40px] border border-slate-100 p-12 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.05)]">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-4">
+                                <span class="w-2 h-8 bg-blue-600 rounded-full"></span>
+                                Statistik Data METAR
+                            </h3>
+                            <p class="text-[11px] text-slate-400 font-semibold mt-2 ml-6 uppercase tracking-wider">
+                                <i class="fa-regular fa-clock mr-1"></i> Terakhir Diperbarui: 02/03/2026 14:00 WIB
+                            </p>
+                        </div>
+                        <span class="text-xs font-bold bg-blue-50 text-blue-600 px-4 py-2 rounded-full uppercase tracking-widest">Live Report</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-slate-50 p-8 rounded-[32px] border border-slate-100">
+                            <p class="text-slate-400 text-xs font-bold uppercase mb-2">Availability</p>
+                            <h4 class="text-4xl font-black text-slate-800">99.2%</h4>
+                        </div>
+                        <div class="bg-slate-50 p-8 rounded-[32px] border border-slate-100">
+                            <p class="text-slate-400 text-xs font-bold uppercase mb-2">Timeliness</p>
+                            <h4 class="text-4xl font-black text-slate-800">97.8%</h4>
+                        </div>
+                        <div class="bg-slate-50 p-8 rounded-[32px] border border-slate-100 text-center flex flex-col justify-center">
+                            <button class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-blue-700 transition">Lihat Detail Data</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="synop-content" class="content-section">
+                <div class="bg-white rounded-[40px] border border-slate-100 p-12 shadow-sm min-h-[400px]">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-4">
+                            <span class="w-2 h-8 bg-emerald-500 rounded-full"></span>
+                            Monitoring Data SYNOP
+                        </h3>
+                        <p class="text-[11px] text-slate-400 font-semibold mt-2 ml-6 uppercase tracking-wider">
+                            <i class="fa-regular fa-clock mr-1"></i> Terakhir Diperbarui: 02/03/2026 12:00 WIB
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-20 rounded-[32px] border-dashed border-2 border-slate-200 text-center">
+                        <div class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                            <i class="fa-solid fa-satellite-dish"></i>
+                        </div>
+                        <p class="text-slate-400 font-medium">Data SYNOP sedang diproses...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="iso-content" class="content-section">
+                <div class="bg-white rounded-[40px] border border-slate-100 p-12 shadow-sm min-h-[400px]">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-4">
+                            <span class="w-2 h-8 bg-orange-500 rounded-full"></span>
+                            Sertifikasi ISO
+                        </h3>
+                        <p class="text-[11px] text-slate-400 font-semibold mt-2 ml-6 uppercase tracking-wider">
+                            <i class="fa-regular fa-clock mr-1"></i> Masa Berlaku: 2025 - 2026
+                        </p>
+                    </div>
+                    </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <footer class="bg-white py-6 border-t border-gray-50 text-center shrink-0">
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">© 2026 Meteorologi Penerbangan BMKG</p>
+    </footer>
+
+    <script>
+        function updateUPTName(val) {
+            const display = document.getElementById('display-upt');
+            if(val.trim() === "") {
+                display.innerText = "Silahkan Pilih Stasiun...";
+                display.classList.add('text-slate-400');
+                display.classList.remove('text-blue-600');
+            } else {
+                display.innerText = "STAMET " + val.toUpperCase();
+                display.classList.remove('text-slate-400');
+                display.classList.add('text-blue-600');
+            }
+        }
+
+        function switchTab(button, sectionId) {
+            const siblingButtons = button.parentElement.querySelectorAll('.pill-item');
+            siblingButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
